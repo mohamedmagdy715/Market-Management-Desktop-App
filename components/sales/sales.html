@@ -1,0 +1,73 @@
+<head>
+    <title>عملية بيع</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/8ebd523497.js" crossorigin="anonymous"></script>
+</head>
+
+<body dir="rtl">
+    <div class="container-fluid">
+    <div class="row d-flex justify-content-between">
+        <div class="col-1"></div>
+        <h1 class="col-10 text-center text-primary">عملية بيع</h1>
+        <button type="button" id="back" class="col-1 btn btn-primary"><i class="fas fa-arrow-left"></i></button>
+    </div>
+
+    <div class="row mt-5 mx-5">
+
+        <button type="button" id="newFatora" class="btn btn-danger col-4">عملية بيع جديدة</button>
+    </div>
+
+    <div class="form-group col-4">
+        <label for="prdBarcode">باركود</label>
+        <input type="text" name="prdBarcode" id="prdBarcode" class="form-control" autofocus>
+    </div>
+    <form class="mt-5 row">
+        <div class="form-group col-4">
+            <label for="prdName">الصنف</label>
+            <input type="text" name="prdName" id="prdName" class="form-control" readonly>
+        </div>
+        <div class="form-group col-2">
+            <label for="prdQt">الكمية</label>
+            <input type="number" name="prdQt" id="prdQt" class="form-control" min="0" max="10000">
+        </div>
+        <div class="form-group col-2">
+            <label for="prdPrice">السعر</label>
+            <input type="number" name="prdPrice" id="prdPrice" class="form-control" min="0" readonly>
+        </div>
+
+
+    </form>
+
+
+    <button type="button" id="add" class="btn btn-success">أضف</button>
+
+    <div>الإجمالي: <i id="tot"></i> جم</div>
+    
+    <div class="row mt-5 mx-5">
+
+        <button type="button" id="print" class="btn btn-warning col-4">أطبع الفاتورة</button>
+    </div>
+</div>
+</body>
+
+<script type="module" src="sales.js">
+
+</script>
+
+<!-- firebase -->
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
+
+<script type="module" src="salesFirebase.js"></script>

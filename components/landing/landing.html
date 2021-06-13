@@ -1,0 +1,47 @@
+<head>
+    <title>النافذة الرئيسية</title>
+    <link rel="stylesheet" href="landing.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+</head>
+<body dir="rtl">
+    <h1 class="text-center text-dark">أهلًا بك في QueenService</h1>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-danger "  id="logout">
+            تسجيل خروج
+        </button>
+
+    </div>
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <h1 class="col-4 text-primary font-weight-bold h1">كاشير</h1>
+            <button class="col-4 mt-5 display-4 btn btn-primary " id="sales">
+                <p class="display-4">عملية بيع</p>
+            </button>
+        </div>
+        <div class="row mt-3">
+            <h1 class="col-4 text-danger font-weight-bold h1">مدير شيفت</h1>
+            <button class="col-4 mt-5 display-4 btn btn-danger "  id="return">
+                <p class="display-4">إرجاع منتج</p>
+            </button>
+        </div>
+        <div class="row mt-3 d-flex justify-content-around">
+            <h1 class="col-3 text-success font-weight-bold h1">مدير عام</h1>
+            <button class="col-2 mt-5 display-4 btn btn-success "  id="products">
+                <p class="display-6">إدارة المنتجات</p>
+            </button>
+            <button class="col-2 mt-5 display-4 btn btn-success " id="income">
+                <p class="display-6">قراءة الأرباح</p>
+            </button>
+            <button class="col-2 mt-5 display-4 btn btn-success "  id="analysis">
+                <p class="display-6">متابعة منتج</p>
+            </button>
+        </div>
+    </div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+<script type="module" src="landing.js"></script>

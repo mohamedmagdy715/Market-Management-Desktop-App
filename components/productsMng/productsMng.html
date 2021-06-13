@@ -1,0 +1,100 @@
+<head>
+    <title>المنتجات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    </script>
+    <script src="https://kit.fontawesome.com/8ebd523497.js" crossorigin="anonymous"></script>
+</head>
+<body dir="rtl">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-between">
+            <div class="col-1"></div>
+            <h1 class="col-10 text-center text-success">إدارة المنتجات</h1>
+            <button type="button" id="back" class="col-1 btn btn-success"><i class="fas fa-arrow-left"></i></button>
+        </div>
+
+        <nav>
+            <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link" id="nav-add-tab" data-toggle="tab" href="#nav-add" role="tab"
+                    aria-controls="nav-add" aria-selected="false">إضافة منتج</a>
+                <a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab"
+                    aria-controls="nav-edit" aria-selected="false">تعديل منتج</a>
+                <a class="nav-item nav-link" id="nav-delete-tab" data-toggle="tab" href="#nav-delete" role="tab"
+                    aria-controls="nav-delete" aria-selected="false">مسح منتج</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade" id="nav-add" role="tabpanel" aria-labelledby="nav-add-tab">
+                <form id="addForm" >
+                    <div class="form-group col-4">
+                      <label for="prdBarcode">باركود</label>
+                      <input type="text" name="prdBarcode" id="prdBarcode" class="form-control" required >
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="prdName">اسم الصنف</label>
+                        <input type="text" name="prdName" id="prdName" class="form-control " required>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="prdPrice">سعر المنتج</label>
+                        <input type="number" name="prdPrice" id="prdPrice" class="form-control" required>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="prdQt">كمية المنتج</label>
+                        <input type="number" name="prdQt" id="prdQt" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-5">أضف المنتج</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="nav-edit" role="tabpanel" aria-labelledby="nav-edit-tab">
+                <form id="editForm" >
+                    <div class="display-6">أدخل باركود أو اسم المنتج المراد تعديله</div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="editprdBarcode">باركود</label>
+                            <input type="text" name="editprdBarcode" id="editprdBarcode" class="form-control" required>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="editprdName">اسم الصنف</label>
+                            <input type="text" name="editprdName" id="editprdName" class="form-control " required>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-warning my-2" id="showDataBtn">أعرض بيانات المنتج</button>
+                    <div class="form-group col-4">
+                        <label for="editprdPrice">سعر المنتج</label>
+                        <input type="number" name="editprdPrice" id="editprdPrice" class="form-control" required>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="editprdQt">كمية المنتج</label>
+                        <input type="number" name="editprdQt" id="editprdQt" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-5">تعديل</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab">
+                <form id="deleteForm" >
+                    <div class="display-6">أدخل باركود أو اسم المنتج المراد مسحه</div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="deleteprdBarcode">باركود</label>
+                            <input type="text" name="deleteprdBarcode" id="deleteprdBarcode" class="form-control" required>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="deleteprdName">اسم الصنف</label>
+                            <input type="text" name="deleteprdName" id="deleteprdName" class="form-control " required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger mt-5">مسح</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+
+<script type="module" src="productsMng.js"></script>
