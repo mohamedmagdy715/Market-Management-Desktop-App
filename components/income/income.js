@@ -1,5 +1,11 @@
+import {auth } from '../sales/salesFirebase.js';
 if(localStorage.getItem("loggedin") !== "admin@queenservice.com"){
-    location.href = "../login/login.html"
+    auth.signOut().then(() => {
+        localStorage.removeItem("loggedin");
+        location.href = `../login/login.html`;
+      }).catch((error) => {
+        window.alert(error.code + "\n" + error.message);
+      });
 }
 // back
 document.getElementById("back").onclick = ()=>{

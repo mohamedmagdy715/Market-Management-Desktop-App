@@ -1,5 +1,12 @@
-if(localStorage.getItem("loggedin") !== "shiftleader@queenservice.com"){
-    location.href = "../login/login.html"
+import {auth } from '../sales/salesFirebase.js';
+
+if(localStorage.getItem("loggedin") !== "cashier@queenservice.com"){
+    auth.signOut().then(() => {
+        localStorage.removeItem("loggedin");
+        location.href = `../login/login.html`;
+      }).catch((error) => {
+        window.alert(error.code + "\n" + error.message);
+      });
 }
 import {Product}from "../../models/product.js";
 import {db} from '../sales/salesFirebase.js';
@@ -61,19 +68,21 @@ document.getElementById("add").onclick = ()=>{
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 db.collection("products").doc(doc.id).update({
-                    availableQt: doc.data().availableQt + parseInt(quantity),
+                    availableQt: doc.data().availableQt + Number(quantity),
                     soldQt: doc.data().soldQt - quantity
                 }).then(() => {
-                    console.log("Document successfully updated!");
+                    // console.log("Document successfully updated!");
                 })
                 .catch((error) => {
                     // The document probably doesn't exist.
-                    console.error("Error updating document: ", error);
+                    // console.error("Error updating document: ", error);
+                    window.alert("Error updating document: ", error);
                 });
             });
         })
         .catch((error) => {
-            console.log("Error getting documents: ", error);
+            // console.log("Error getting documents: ", error);
+            window.alert("Error getting document: ", error);
         });
         document.getElementById("prdBarcode").focus();
 }
@@ -85,13 +94,15 @@ document.getElementById("print").onclick = ()=>{
     db.collection("income").doc(today).get().then((doc) => {
         if (doc.exists) {
         db.collection("income").doc(today).update({
-            income: doc.data().income+parseInt(total)
+            income: doc.data().income+Number(total)
         }).then(() => {
-            console.log("Document successfully updated!");
+            // console.log("Document successfully updated!");
+
         })
         .catch((error) => {
             // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
+            //console.error("Error updating document: ", error);
+            window.alert("income Error updating document: ", error);
         });
         } else {
         db.collection("income").doc(today).set({
@@ -105,7 +116,19 @@ document.getElementById("print").onclick = ()=>{
         });
         }
     }).catch((error) => {
-        console.log("Error getting document:", error);
+        //console.log("Error getting document:", error);
+
+        db.collection("income").doc(today).set({
+            income: total
+        })
+        .then(() => {
+            //console.log("Document successfully written!");
+            window.alert("تمت إضافة الإيرادات")
+        })
+        .catch((error) => {
+            //console.error("Error writing document: ", error);
+            window.alert("خطأ في إضافة الإيرادات: ", error);
+        });
     });
 }
 

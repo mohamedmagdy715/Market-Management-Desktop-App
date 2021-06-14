@@ -7,10 +7,9 @@
 </head>
 <body dir="rtl" class="container-fluid">
     <p class="text-center">Queen Service</p>
-    <p class=""> الجامعة اليابانية</p>
+    <p class="">تنزيل فاتورة</p>
     <p id="date">التاريخ</p>
     <p >رقم الفاتورة: <i id="fatoraName"></i></p>
-    <p >عملية مرتجع</p>
     <script>
         let currentdate = new Date(); 
         let datetime =  currentdate.getDate() + "-"
@@ -21,12 +20,13 @@
                         + currentdate.getSeconds();
         document.getElementById("date").innerHTML += `\t\t${datetime}`;
     </script>
-    <table class="table">
+    <table class="table" style="width: 90%">
         <thead>
             <tr>
                 <th style="width: 39%;">الصنف</th>
                 <th style="width: 20%;">الكمية</th>
-                <th style="width: 20%;">السعر</th>
+                <th style="width: 20%;">سعر البيع</th>
+                <th style="width: 20%;">سعر الشراء</th>
                 <th style="width: 20%;">القيمة</th>
             </tr>
         </thead>
@@ -38,9 +38,14 @@
         <p id="total"></p>
 
     </div>
-    <p>شكرًا لزيارتكم</p>
+    <div class="d-flex justify-content-between mt-3">
+        <p class="font-weight-bold">العدد</p>        
+        <p id="num"></p>
+
+    </div>
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
-<script type="module" src="returnFatora.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+<script type="module" src="tanzelFatora.js"></script>

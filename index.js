@@ -4,7 +4,7 @@ const jetpack = require('fs-jetpack');
 const { app, BrowserWindow , ipcMain , Menu } = electron;
 
 
-let mainWindow, fatoraWindow, returnFatoraWindow ;
+let mainWindow, fatoraWindow, returnFatoraWindow, tanzelFatoraWindow ;
 let fileName,total ;
 
 app.on('ready',()=>{
@@ -18,8 +18,8 @@ app.on('ready',()=>{
     mainWindow.loadURL(`file://${__dirname}/components/login/login.html`);
 
     // menubar
-    const plainMenu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(plainMenu);
+    // const plainMenu = Menu.buildFromTemplate(menuTemplate);
+    // Menu.setApplicationMenu(plainMenu);
 });
 
 // menu options
@@ -74,9 +74,9 @@ function newFatoraWindow(){
     jetpack.copyAsync(`fatora/fatora.html`, `fatora/${fileName}.html`, { overwrite: true })
     .then(()=>{
         // development
-        // fatoraWindow.loadURL(`file://${__dirname}/fatora/${fileName}.html`);
+        fatoraWindow.loadURL(`file://${__dirname}/fatora/${fileName}.html`);
         // production
-        fatoraWindow.loadURL(`file://${__dirname}/../../fatora/${fileName}.html`);
+        // fatoraWindow.loadURL(`file://${__dirname}/../../fatora/${fileName}.html`);
     }).catch((error)=>{
         console.log(error);
     });
@@ -140,9 +140,9 @@ function newReturnFatoraWindow(fatoraNumber){
     jetpack.copyAsync(`returnFatora/returnFatora.html`, `returnFatora/${fatoraNumber}.html`, { overwrite: true })
     .then(()=>{
         // development
-        // returnFatoraWindow.loadURL(`file://${__dirname}/returnFatora/${fatoraNumber}.html`);
+        returnFatoraWindow.loadURL(`file://${__dirname}/returnFatora/${fatoraNumber}.html`);
         // production
-        returnFatoraWindow.loadURL(`file://${__dirname}/../../returnFatora/${fatoraNumber}.html`);
+        // returnFatoraWindow.loadURL(`file://${__dirname}/../../returnFatora/${fatoraNumber}.html`);
     }).catch((error)=>{
         console.log(error)
     });
@@ -184,6 +184,73 @@ ipcMain.on("printReturnFatora", (event , value)=>{
     jetpack.append(
         `returnFatora/${fileName}.txt`,
         `\nالإجمالي\t\t\t\t\t${total}`
+      );
+});
+
+// tanzel
+
+function newTanzelFatoraWindow(fatoraNumber){
+    tanzelFatoraWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
+        },
+        width:300,
+        title:'عملية تنزيل فاتورة',
+        x:10,
+        y:10
+    });
+    fileName = fatoraNumber;
+    jetpack.file(`tanzel/${fatoraNumber}.html`,{});
+    jetpack.copyAsync(`tanzel/tanzelFatora.html`, `tanzel/${fatoraNumber}.html`, { overwrite: true })
+    .then(()=>{
+        // development
+        tanzelFatoraWindow.loadURL(`file://${__dirname}/tanzel/${fatoraNumber}.html`);
+        // production
+        // returnFatoraWindow.loadURL(`file://${__dirname}/../../tanzel/${fatoraNumber}.html`);
+    }).catch((error)=>{
+        console.log(error)
+    });
+    let currentdate = new Date();
+    total=0;
+    jetpack.append(
+      `tanzel/${fileName}.txt`,
+      `\t\tQueenService\nالجامعة اليابانية\nالتارخ\t${currentdate.getDate()}-${
+        currentdate.getMonth() + 1
+      }-${currentdate.getFullYear()}\t${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}\n
+      رقم الفاتورة\t${fileName}\nتنزيل فاتورة\nالصنف\t\t\tالكمية\tسعر البيع\tسعر الشراء\tالقيمة`
+    );
+}
+
+ipcMain.on("newTanzelFatora", (event , value)=>{
+    newTanzelFatoraWindow(value);
+});
+
+ipcMain.on("newProductTanzel", (event , value)=>{
+    tanzelFatoraWindow.webContents.send("newTanzelProductSent",value);
+    tanzelFatoraWindow.webContents.send("fatoraName",fileName);
+    total += value.availableQt*value.price;
+    jetpack.append(
+        `tanzel/${fileName}.txt`,
+        `\n${value.name}\t\t\t${value.availableQt}\t${value.price}\t${value.buyPrice}\t${value.availableQt*value.buyPrice}`
+        );
+    });
+    
+
+ipcMain.on("printTanzelFatora", (event , value)=>{
+    tanzelFatoraWindow.webContents.print({
+        silent: true,
+    }, (success, failureReason) => {
+        if (!success) alert(failureReason)
+        else {
+            console.log('Print Initiated');
+            tanzelFatoraWindow.close();
+        }
+    });
+    jetpack.append(
+        `tanzel/${fileName}.txt`,
+        `\nالإجمالي\t\t\t\t\t${total}\nالعدد\t\t\t\t\t${value}`
       );
 });
 

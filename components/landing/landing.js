@@ -15,6 +15,9 @@ document.getElementById("income").onclick = () =>{
 document.getElementById("analysis").onclick = () =>{
   location.href = `../analysis/analysis.html`;
 }
+document.getElementById("tanzel").onclick = () =>{
+  location.href = `../tanzel/tanzel.html`;
+}
 
 document.getElementById("logout").onclick = () =>{
   auth.signOut().then(() => {

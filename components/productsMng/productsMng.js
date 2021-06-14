@@ -1,5 +1,12 @@
+import {auth } from '../sales/salesFirebase.js';
+
 if(localStorage.getItem("loggedin") !== "admin@queenservice.com"){
-    location.href = "../login/login.html"
+    auth.signOut().then(() => {
+        localStorage.removeItem("loggedin");
+        location.href = `../login/login.html`;
+      }).catch((error) => {
+        window.alert(error.code + "\n" + error.message);
+      });
 }
 
 // back
@@ -57,8 +64,8 @@ document.getElementById("addForm").onsubmit = (event)=>{
     db.collection("products").add({
         name: document.getElementById("prdName").value,
         barcode: document.getElementById("prdBarcode").value,
-        price: parseInt(document.getElementById("prdPrice").value),
-        availableQt: parseInt(document.getElementById("prdQt").value),
+        price: Number(document.getElementById("prdPrice").value),
+        availableQt: Number(document.getElementById("prdQt").value),
         soldQt: 0
     })
     .then(() => {
@@ -94,8 +101,8 @@ document.getElementById("editForm").onsubmit = (event)=>{
         querySnapshot.forEach((doc) => {
             db.collection("products").doc(doc.id).update({
                 name: document.getElementById("editprdName").value,
-                price: parseInt(document.getElementById("editprdPrice").value),
-                availableQt: parseInt(document.getElementById("editprdQt").value),
+                price: Number(document.getElementById("editprdPrice").value),
+                availableQt: Number(document.getElementById("editprdQt").value),
             }).then(() => {
                 totalEditProducts++;
                 document.getElementById("editprdName").value = "";
