@@ -18,7 +18,7 @@ const jetpack = require('fs-jetpack');
 
 let products = [];
 
-let total;
+let total,buyTotal,buyPrice;
 
 //back button
 
@@ -35,6 +35,7 @@ document.getElementById("prdBarcode").addEventListener("keyup", function (event)
       document.getElementById("prdName").value = product.name;
       document.getElementById("prdPrice").value = product.price;
       document.getElementById("prdQt").value = 1;
+      buyPrice = product.buyPrice;
 
       document.getElementById("prdQt").focus();
     }
@@ -59,6 +60,7 @@ document.getElementById("add").onclick = ()=>{
     let myPrd = new Product(name , price , quantity);
     ipcRenderer.send("newProductReturned",myPrd);
 
+    buyTotal -= buyPrice * quantity;
     total -= price * quantity;
     document.getElementById("tot").innerHTML = total;
 
@@ -94,7 +96,8 @@ document.getElementById("print").onclick = ()=>{
     db.collection("income").doc(today).get().then((doc) => {
         if (doc.exists) {
         db.collection("income").doc(today).update({
-            income: doc.data().income+Number(total)
+            income: doc.data().income+Number(total),
+            netIncome: doc.data().netIncome + Number(total) - buyTotal
         }).then(() => {
             // console.log("Document successfully updated!");
 
@@ -106,7 +109,8 @@ document.getElementById("print").onclick = ()=>{
         });
         } else {
         db.collection("income").doc(today).set({
-            income: total
+            income: total,
+            netIncome: Number(total) - buyTotal
         })
         .then(() => {
             console.log("Document successfully written!");
@@ -119,7 +123,8 @@ document.getElementById("print").onclick = ()=>{
         //console.log("Error getting document:", error);
 
         db.collection("income").doc(today).set({
-            income: total
+            income: total,
+            netIncome: Number(total) - buyTotal
         })
         .then(() => {
             //console.log("Document successfully written!");
@@ -137,6 +142,7 @@ document.getElementById("print").onclick = ()=>{
 
 document.getElementById("newReturnFatora").onclick = () => {
     total = 0;
+    buyTotal = 0;
     products = jetpack.read(`products/products.json`,'json');
     ipcRenderer.send("newReturnFatora",document.getElementById("returnFatoraNum").value);
     document.getElementById("prdBarcode").focus();

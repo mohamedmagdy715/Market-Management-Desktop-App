@@ -26,6 +26,7 @@ document.getElementById("showData").onclick = ()=>{
         querySnapshot.forEach((doc) => {
             document.getElementById("tableName").innerHTML = doc.data().name;
             document.getElementById("tablePrice").innerHTML = doc.data().price;
+            document.getElementById("tableBuyPrice").innerHTML = doc.data().buyPrice;
             document.getElementById("tableSoldQt").innerHTML = doc.data().soldQt;
             document.getElementById("tableAvQt").innerHTML = doc.data().availableQt;
         });
@@ -41,12 +42,24 @@ document.getElementById("showData").onclick = ()=>{
 document.getElementById("showAllData").onclick = ()=>{
     db.collection("products").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            document.getElementById("table").innerHTML += `<tr>
-            <td scope="row">${doc.data().name}</td>
-            <td >${doc.data().price}</td>
-            <td >${doc.data().soldQt}</td>
-            <td >${doc.data().availableQt}</td>
-        </tr>`
+            if(doc.data().availableQt == 0){
+                document.getElementById("table").innerHTML += `<tr>
+                <td scope="row">${doc.data().name}</td>
+                <td >${doc.data().price}</td>
+                <td >${doc.data().buyPrice}</td>
+                <td >${doc.data().soldQt}</td>
+                <td style="background-color: #CA0B00;" >${doc.data().availableQt}</td>
+            </tr>`
+            }else{
+                document.getElementById("table").innerHTML += `<tr>
+                <td scope="row">${doc.data().name}</td>
+                <td >${doc.data().price}</td>
+                <td >${doc.data().buyPrice}</td>
+                <td >${doc.data().soldQt}</td>
+                <td >${doc.data().availableQt}</td>
+            </tr>`
+
+            }
         });
     });
 }

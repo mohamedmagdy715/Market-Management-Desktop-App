@@ -19,7 +19,7 @@ const { ipcRenderer } = electron;
 const jetpack = require('fs-jetpack');
 
 let products = [];
-let total;
+let total,buyTotal,buyPrice,productAvQt;
 //back button
 
 document.getElementById("back").onclick = ()=>{
@@ -35,6 +35,8 @@ document.getElementById("prdBarcode").addEventListener("keyup", function (event)
       document.getElementById("prdName").value = product.name;
       document.getElementById("prdPrice").value = product.price;
       document.getElementById("prdQt").value = 1;
+      productAvQt = product.availableQt;
+      buyPrice = product.buyPrice;
 
       document.getElementById("prdQt").focus();
     }
@@ -47,6 +49,21 @@ document.getElementById("add").onclick = ()=>{
             return
         }
     }
+    if(document.getElementById("prdQt").value>productAvQt){
+        window.alert("الكمية أكبر من المتوفر");
+        document.getElementById("prdQt").value = "";
+        return;
+    }
+    console.log(products[products.findIndex((product) => {
+        return product.barcode == document.getElementById("prdBarcode").value;
+      })])
+    products[products.findIndex((product) => {
+        return product.barcode == document.getElementById("prdBarcode").value;
+      })].availableQt -= Number(document.getElementById("prdQt").value);
+      console.log(products[products.findIndex((product) => {
+        return product.barcode == document.getElementById("prdBarcode").value;
+      })])
+
     let name = document.getElementById("prdName").value;
     let price = document.getElementById("prdPrice").value;
     let quantity = document.getElementById("prdQt").value;
@@ -59,7 +76,7 @@ document.getElementById("add").onclick = ()=>{
     let myPrd = new Product(name , price , quantity);
     ipcRenderer.send("newProductAdded",myPrd);
 
-
+    buyTotal += buyPrice * quantity;
     total += price * quantity;
     document.getElementById("tot").innerHTML = total;
     
@@ -95,7 +112,8 @@ document.getElementById("print").onclick = ()=>{
     db.collection("income").doc(today).get().then((doc) => {
         if (doc.exists) {
         db.collection("income").doc(today).update({
-            income: doc.data().income+Number(total)
+            income: doc.data().income+Number(total),
+            netIncome: doc.data().netIncome + Number(total) - buyTotal
         }).then(() => {
             //console.log("Document successfully updated!");
             //window.alert("income updated")
@@ -107,7 +125,8 @@ document.getElementById("print").onclick = ()=>{
         });
         } else {
         db.collection("income").doc(today).set({
-            income: total
+            income: total,
+            netIncome: Number(total) - buyTotal
         })
         .then(() => {
             //console.log("Document successfully written!");
@@ -122,7 +141,8 @@ document.getElementById("print").onclick = ()=>{
         //console.log("Error getting document:", error);
 
         db.collection("income").doc(today).set({
-            income: total
+            income: total,
+            netIncome: Number(total) - buyTotal
         })
         .then(() => {
             //console.log("Document successfully written!");
@@ -140,6 +160,7 @@ document.getElementById("print").onclick = ()=>{
 
 document.getElementById("newFatora").onclick = () => {
     total = 0;
+    buyTotal = 0;
     products = jetpack.read(`products/products.json`,'json');
     ipcRenderer.send("newFatora");
     document.getElementById("prdBarcode").focus();

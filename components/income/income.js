@@ -16,15 +16,24 @@ import {db } from '../sales/salesFirebase.js';
 
 document.getElementById("dayIncome").onclick = ()=>{
     let date = new Date(document.getElementById("day").value);
-    let incomeDay = `${date.getDate()}-${(date.getMonth()+1)}-${date.getFullYear()}`;
-
-    db.collection("income").doc(incomeDay).get().then((doc) => {
-        if (doc.exists) {
-            document.getElementById("income").innerHTML = `الأرباح: ${doc.data().income} جم`;
-        } else {
-            window.alert("لا أرباح لهذا اليوم!!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
+    let date2 = new Date(document.getElementById("day2").value);
+    let datex = new Date();
+    let income=0, netIncome=0;
+    datex.setDate(date.getDate());
+    while(datex.getDate() <= date2.getDate()){
+        let incomeDay = `${datex.getDate()}-${(datex.getMonth()+1)}-${datex.getFullYear()}`;
+        db.collection("income").doc(incomeDay).get().then((doc) => {
+            if (doc.exists) {
+                income += doc.data().income;
+                netIncome += doc.data().netIncome;
+                document.getElementById("inc").innerHTML = income;
+                document.getElementById("net").innerHTML = netIncome;
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+        datex.setDate(datex.getDate() + 1);
+    }
+    document.getElementById("income").innerHTML = `الإيرادات: <i id="inc"></i> جم`;
+    document.getElementById("netIncome").innerHTML = `الأرباح: <i id="net"></i> جم`;
 }

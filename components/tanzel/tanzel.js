@@ -4,6 +4,8 @@ document.getElementById("back").onclick = ()=>{
 }
 const electron = require("electron");
 
+window.alert("تأكد من أن الماركت متصل بالإنترنت قبل تنزيل الفاتورة وبعدها");
+
 const { ipcRenderer } = electron;
 import { db } from '../sales/salesFirebase.js';
 import {Product}from "../../models/product.js";
