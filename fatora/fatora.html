@@ -6,10 +6,10 @@
     </script>
 </head>
 <body dir="rtl" class="container-fluid">
-    <p class="text-center">Queen Service</p>
-    <p class=""> الجامعة اليابانية</p>
-    <p id="date">التاريخ</p>
-    <p >رقم الفاتورة: <i id="fatoraName"></i></p>
+    <p class="text-center" style="font-size: small;">Queen Service</p>
+    <p style="font-size: small;"> الجامعة اليابانية</p>
+    <p id="date" style="font-size: small;">التاريخ</p>
+    <p style="font-size: small;" >رقم الفاتورة: <i id="fatoraName"></i></p>
     <script>
         let currentdate = new Date(); 
         let datetime =  currentdate.getDate() + "-"
@@ -20,24 +20,24 @@
                         + currentdate.getSeconds();
         document.getElementById("date").innerHTML += `\t\t${datetime}`;
     </script>
-    <table class="table" style="width: 90%">
+    <table class="table" style="width: 100%">
         <thead>
             <tr>
-                <th style="width: 39%;">الصنف</th>
-                <th style="width: 20%;">الكمية</th>
-                <th style="width: 20%;">السعر</th>
-                <th style="width: 20%;">القيمة</th>
+                <th style="width: 100px;font-size: small;">الصنف</th>
+                <th style="width: 20px;font-size: small;">الكمية</th>
+                <th style="width: 20px;font-size: small;">السعر</th>
+                <th style="width: 20px;font-size: small;">القيمة</th>
             </tr>
         </thead>
         <tbody id="fatoraTable">
         </tbody>
     </table>
     <div class="d-flex justify-content-between mt-3">
-        <p class="font-weight-bold">الإجمالي</p>        
+        <p class="font-weight-bold" style="font-size: small;">الإجمالي</p>        
         <p id="total"></p>
 
     </div>
-    <p>شكرًا لزيارتكم</p>
+    <p style="font-size: small;">شكرًا لزيارتكم</p>
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>

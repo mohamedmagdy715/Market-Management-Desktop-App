@@ -12,10 +12,10 @@ ipcRenderer.on("newReturnedProductSent", (event, value) => {
 
 function addProductToFatora(product){
   return `<tr>\
-  <td scope="row" style="font-size: small;">${product.name}</td>\
-  <td>${product.boughtQt}</td>\
-  <td>${product.price}</td>\
-  <td>${product.boughtQt*product.price}</td>\
+  <td style="width: 100px;font-size: x-small;">${product.name}</td>\
+  <td style="width: 20px;font-size: small;">${product.boughtQt}</td>\
+  <td style="width: 20px;font-size: small;">${product.price}</td>\
+  <td style="width: 20px;font-size: small;">${product.boughtQt*product.price}</td>\
 </tr>`
 };
 

@@ -13,11 +13,11 @@ ipcRenderer.on("newTanzelProductSent", (event, value) => {
 
 function addProductToFatora(product){
   return `<tr>\
-  <td scope="row" style="font-size: small;">${product.name}</td>\
-  <td>${product.availableQt}</td>\
-  <td>${product.price}</td>\
-  <td>${product.buyPrice}</td>\
-  <td>${product.availableQt*product.buyPrice}</td>\
+  <td style="width: 100px;font-size: x-small;">${product.name}</td>\
+  <td style="width: 20px;font-size: small;">${product.availableQt}</td>\
+  <td style="width: 20px;font-size: small;">${product.price}</td>\
+  <td style="width: 20px;font-size: small;">${product.buyPrice}</td>\
+  <td style="width: 20px;font-size: small;">${product.availableQt*product.buyPrice}</td>\
 </tr>`
 };
 
