@@ -18,8 +18,8 @@ app.on('ready',()=>{
     mainWindow.loadURL(`file://${__dirname}/components/login/login.html`);
 
     // menubar
-    // const plainMenu = Menu.buildFromTemplate(menuTemplate);
-    // Menu.setApplicationMenu(plainMenu);
+    const plainMenu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(plainMenu);
 });
 
 // menu options
@@ -74,9 +74,9 @@ function newFatoraWindow(){
     jetpack.copyAsync(`fatora/fatora.html`, `fatora/${fileName}.html`, { overwrite: true })
     .then(()=>{
         // development
-        fatoraWindow.loadURL(`file://${__dirname}/fatora/${fileName}.html`);
+        // fatoraWindow.loadURL(`file://${__dirname}/fatora/${fileName}.html`);
         // production
-        // fatoraWindow.loadURL(`file://${__dirname}/../../fatora/${fileName}.html`);
+        fatoraWindow.loadURL(`file://${__dirname}/../../fatora/${fileName}.html`);
     }).catch((error)=>{
         console.log(error);
     });
@@ -112,6 +112,7 @@ ipcMain.on("printFatora", (event , value)=>{
         else {
             console.log('Print Initiated');
             fatoraWindow.close();
+            mainWindow.reload();
         }
     });
     jetpack.append(
@@ -140,9 +141,9 @@ function newReturnFatoraWindow(fatoraNumber){
     jetpack.copyAsync(`returnFatora/returnFatora.html`, `returnFatora/${fatoraNumber}.html`, { overwrite: true })
     .then(()=>{
         // development
-        returnFatoraWindow.loadURL(`file://${__dirname}/returnFatora/${fatoraNumber}.html`);
+        // returnFatoraWindow.loadURL(`file://${__dirname}/returnFatora/${fatoraNumber}.html`);
         // production
-        // returnFatoraWindow.loadURL(`file://${__dirname}/../../returnFatora/${fatoraNumber}.html`);
+        returnFatoraWindow.loadURL(`file://${__dirname}/../../returnFatora/${fatoraNumber}.html`);
     }).catch((error)=>{
         console.log(error)
     });
@@ -206,9 +207,9 @@ function newTanzelFatoraWindow(fatoraNumber){
     jetpack.copyAsync(`tanzel/tanzelFatora.html`, `tanzel/${fatoraNumber}.html`, { overwrite: true })
     .then(()=>{
         // development
-        tanzelFatoraWindow.loadURL(`file://${__dirname}/tanzel/${fatoraNumber}.html`);
+        // tanzelFatoraWindow.loadURL(`file://${__dirname}/tanzel/${fatoraNumber}.html`);
         // production
-        // returnFatoraWindow.loadURL(`file://${__dirname}/../../tanzel/${fatoraNumber}.html`);
+        tanzelFatoraWindow.loadURL(`file://${__dirname}/../../tanzel/${fatoraNumber}.html`);
     }).catch((error)=>{
         console.log(error)
     });

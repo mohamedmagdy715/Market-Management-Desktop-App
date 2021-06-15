@@ -5,7 +5,7 @@ const { ipcRenderer } = electron;
 let total = 0, num=0;
 
 ipcRenderer.on("newTanzelProductSent", (event, value) => {
-    total += value.availableQt*value.price;
+    total += value.availableQt*value.buyPrice;
   document.getElementById("total").innerHTML = total;
   document.getElementById("num").innerHTML = ++num;
   document.getElementById("fatoraTable").innerHTML += addProductToFatora(value);
@@ -17,7 +17,7 @@ function addProductToFatora(product){
   <td>${product.availableQt}</td>\
   <td>${product.price}</td>\
   <td>${product.buyPrice}</td>\
-  <td>${product.availableQt*product.price}</td>\
+  <td>${product.availableQt*product.buyPrice}</td>\
 </tr>`
 };
 
