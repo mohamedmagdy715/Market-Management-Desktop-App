@@ -82,74 +82,74 @@ let products = jetpack.read(`products/products.json`,'json');
     
 // }
 
-// document.getElementById("showDataBtn").onclick = ()=>{
-//     let product = products.find((product)=>{
-//             return ((product.barcode == document.getElementById("editprdBarcode").value) || (product.name == document.getElementById("editprdName").value))
-//     });
-//     document.getElementById("editprdBarcode").value = product.barcode;
-//     document.getElementById("editprdName").value = product.name;
-//     document.getElementById("editprdPrice").value = product.price;
-//     document.getElementById("editprdQt").value = product.availableQt;
-// }
-
-
-// document.getElementById("editForm").onsubmit = (event)=>{
-//     event.preventDefault();
-
-//     db.collection("products").where("barcode", "==", document.getElementById("editprdBarcode").value).get()
-//     .then((querySnapshot) => {
-//         querySnapshot.forEach((doc) => {
-//             db.collection("products").doc(doc.id).update({
-//                 name: document.getElementById("editprdName").value,
-//                 price: Number(document.getElementById("editprdPrice").value),
-//                 availableQt: Number(document.getElementById("editprdQt").value),
-//             }).then(() => {
-//                 totalEditProducts++;
-//                 document.getElementById("editprdName").value = "";
-//                 document.getElementById("editprdBarcode").value = "";
-//                 document.getElementById("editprdPrice").value = 0;
-//                 document.getElementById("editprdQt").value = 0;
-//                 window.alert("تمت تعديل المنتج \n العدد "+totalEditProducts)
-//             })
-//             .catch((error) => {
-//                 // The document probably doesn't exist.
-//                 console.error("Error updating document: ", error);
-//             });
-//         });
-//     })
-//     .catch((error) => {
-//         console.log("Error getting documents: ", error);
-//     });
-    
-// }
-
-
-document.getElementById("deleteprdBarcode").onblur = ()=>{
+document.getElementById("showDataBtn").onclick = ()=>{
     let product = products.find((product)=>{
-            return (product.barcode == document.getElementById("deleteprdBarcode").value)
+            return ((product.barcode == document.getElementById("editprdBarcode").value) || (product.name == document.getElementById("editprdName").value))
     });
-    document.getElementById("deleteprdName").value = product.name;
+    document.getElementById("editprdBarcode").value = product.barcode;
+    document.getElementById("editprdName").value = product.name;
+    // document.getElementById("editprdPrice").value = product.price;
+    document.getElementById("editprdQt").value = product.availableQt;
 }
 
-document.getElementById("deleteForm").onsubmit = (event)=>{
+
+document.getElementById("editForm").onsubmit = (event)=>{
     event.preventDefault();
-    if(window.confirm("هل أنت متأكد؟")){
-        db.collection("products").where("name", "==", document.getElementById("deleteprdName").value).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                db.collection("products").doc(doc.id).delete().then(() => {
-                    totalDeletedProducts++;
-                    document.getElementById("deleteprdName").value = "";
-                    document.getElementById("deleteprdBarcode").value = "";
-                    window.alert("تمت مسح المنتج \n العدد "+totalDeletedProducts)
-                }).catch((error) => {
-                    console.error("Error removing document: ", error);
-                });
+
+    db.collection("products").where("barcode", "==", document.getElementById("editprdBarcode").value).get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            db.collection("products").doc(doc.id).update({
+                // name: document.getElementById("editprdName").value,
+                // price: Number(document.getElementById("editprdPrice").value),
+                availableQt: Number(document.getElementById("editprdQt").value),
+            }).then(() => {
+                totalEditProducts++;
+                document.getElementById("editprdName").value = "";
+                document.getElementById("editprdBarcode").value = "";
+                // document.getElementById("editprdPrice").value = 0;
+                document.getElementById("editprdQt").value = 0;
+                window.alert("تمت تعديل كمية المنتج \n العدد "+totalEditProducts)
+            })
+            .catch((error) => {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
             });
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
         });
-    }
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
     
 }
+
+
+// document.getElementById("deleteprdBarcode").onblur = ()=>{
+//     let product = products.find((product)=>{
+//             return (product.barcode == document.getElementById("deleteprdBarcode").value)
+//     });
+//     document.getElementById("deleteprdName").value = product.name;
+// }
+
+// document.getElementById("deleteForm").onsubmit = (event)=>{
+//     event.preventDefault();
+//     if(window.confirm("هل أنت متأكد؟")){
+//         db.collection("products").where("name", "==", document.getElementById("deleteprdName").value).get()
+//         .then((querySnapshot) => {
+//             querySnapshot.forEach((doc) => {
+//                 db.collection("products").doc(doc.id).delete().then(() => {
+//                     totalDeletedProducts++;
+//                     document.getElementById("deleteprdName").value = "";
+//                     document.getElementById("deleteprdBarcode").value = "";
+//                     window.alert("تمت مسح المنتج \n العدد "+totalDeletedProducts)
+//                 }).catch((error) => {
+//                     console.error("Error removing document: ", error);
+//                 });
+//             });
+//         })
+//         .catch((error) => {
+//             console.log("Error getting documents: ", error);
+//         });
+//     }
+    
+// }
