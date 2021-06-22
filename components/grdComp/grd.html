@@ -1,5 +1,5 @@
 <head>
-    <title>متابعة منتج</title>
+    <title>جرد</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
@@ -11,42 +11,45 @@
     <div class="container-fluid">
         <div class="row d-flex justify-content-between">
             <div class="col-1"></div>
-            <h1 class="col-10 text-center text-success">متابعة منتج</h1>
+            <h1 class="col-10 text-center text-success">جرد</h1>
             <button type="button" id="back" class="col-1 btn btn-success"><i class="fas fa-arrow-left"></i></button>
         </div>
-
-        <div class="display-6">أدخل باركود أو اسم المنتج لترى بياناته</div>
         <div class="row">
-            <div class="form-group col-4">
-                <label for="prdBarcode">باركود</label>
-                <input type="text" name="prdBarcode" id="prdBarcode" class="form-control">
+            <div class="col-2">
+                اختر الشهر
             </div>
-            <div class="form-group col-4">
-                <label for="prdName">اسم الصنف</label>
-                <input type="text" name="prdName" id="prdName" class="form-control ">
+            <div class="form-group mt-5 col-4">
+                <input type="month" name="choosenMonth" id="choosenMonth" class="form-control col-4">
             </div>
+            <!-- <div class="form-group mt-5 col-4">
+                <label for="day2">إلى</label>
+                <input type="date" name="day2" id="day2" class="form-control col-4">
+            </div> -->
         </div>
-        <button type="button" class="btn btn-warning my-2" id="showData">أعرض بيانات المنتج</button>
-        <button type="button" class="btn btn-primary my-2" id="showAllData">أعرض جميع المنتجات</button>
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-primary my-2" id="show">أعرض</button>
+            <button type="button" class="btn btn-success my-2" id="download" >تحميل هذا التقرير على الجهاز</button>
+            <!-- <button type="button" class="btn btn-warning my-2" id="send" hidden="true">إرسال التقرير</button>
+            <button type="button" class="btn btn-warning my-2" id="downAdmin">تحميل التقرير من الماركت</button> -->
+            <input type="file" id="file" accept=".xls" style="display: none;">
+        </div>
 
-        <table class="table">
+        <table class="table" id="grdTable">
             <thead>
                 <tr>
                     <th>اسم الصنف</th>
-                    <th>سعر البيع</th>
+                    <th>الكمية السابقة</th>
+                    <th>الكمية المضافة</th>
                     <th>سعر الشراء</th>
+                    <th>إجمالي التكلفة</th>
                     <th>الكمية المباعة</th>
+                    <th>سعر البيع</th>
+                    <th>إجمالي المبيعات</th>
                     <th>الكمية المتبقية</th>
+                    <th>قيمة الكمية المتبقية</th>
                 </tr>
             </thead>
             <tbody id="table">
-                <tr>
-                    <td scope="row" id="tableName"></td>
-                    <td id="tablePrice"></td>
-                    <td id="tableBuyPrice"></td>
-                    <td id="tableSoldQt"></td>
-                    <td id="tableAvQt"></td>
-                </tr>
             </tbody>
         </table>
 
@@ -57,5 +60,4 @@
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
-
-<script type="module" src="analysis.js"></script>
+<script type="module" src="grd.js"></script>

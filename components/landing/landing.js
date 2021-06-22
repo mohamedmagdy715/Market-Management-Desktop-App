@@ -12,8 +12,11 @@ document.getElementById("products").onclick = () =>{
 document.getElementById("income").onclick = () =>{
   location.href = `../income/income.html`;
 }
-document.getElementById("analysis").onclick = () =>{
-  location.href = `../analysis/analysis.html`;
+// document.getElementById("analysis").onclick = () =>{
+//   location.href = `../analysis/analysis.html`;
+// }
+document.getElementById("grd").onclick = () =>{
+  location.href = `../grdComp/grd.html`;
 }
 document.getElementById("tanzel").onclick = () =>{
   location.href = `../tanzel/tanzel.html`;

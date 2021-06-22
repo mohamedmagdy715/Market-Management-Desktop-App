@@ -83,7 +83,7 @@ function newFatoraWindow(){
     total=0;
     jetpack.append(
       `fatora/${fileName}.txt`,
-      `\t\tQueenService\nالجامعة اليابانية\nالتارخ\t${currentdate.getDate()}-${
+      `\t\tQueenService\nالجامعة اليابانية\nالتاريخ\t${currentdate.getDate()}-${
         currentdate.getMonth() + 1
       }-${currentdate.getFullYear()}\t${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}\n
       رقم الفاتورة\t${fileName}\nالصنف\t\t\tالكمية\tالسعر\tالقيمة`
@@ -151,7 +151,7 @@ function newReturnFatoraWindow(fatoraNumber){
     total=0;
     jetpack.append(
       `returnFatora/${fileName}.txt`,
-      `\t\tQueenService\nالجامعة اليابانية\nالتارخ\t${currentdate.getDate()}-${
+      `\t\tQueenService\nالجامعة اليابانية\nالتاريخ\t${currentdate.getDate()}-${
         currentdate.getMonth() + 1
       }-${currentdate.getFullYear()}\t${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}\n
       رقم الفاتورة\t${fileName}\nعملية إرجاع\nالصنف\t\t\tالكمية\tالسعر\tالقيمة`
@@ -217,10 +217,10 @@ function newTanzelFatoraWindow(fatoraNumber){
     total=0;
     jetpack.append(
       `tanzel/${fileName}.txt`,
-      `\t\tQueenService\nالجامعة اليابانية\nالتارخ\t${currentdate.getDate()}-${
+      `\t\tQueenService\nالجامعة اليابانية\nالتاريخ\t${currentdate.getDate()}-${
         currentdate.getMonth() + 1
       }-${currentdate.getFullYear()}\t${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}\n
-      رقم الفاتورة\t${fileName}\nتنزيل فاتورة\nالصنف\t\t\tالكمية\tسعر البيع\tسعر الشراء\tالقيمة`
+      رقم الفاتورة\t${fileName}\nتنزيل فاتورة\nالصنف\t\t\tالكمية\tالكمية السابقة\tسعر البيع\tسعر الشراء\tالقيمة`
     );
 }
 
@@ -231,10 +231,10 @@ ipcMain.on("newTanzelFatora", (event , value)=>{
 ipcMain.on("newProductTanzel", (event , value)=>{
     tanzelFatoraWindow.webContents.send("newTanzelProductSent",value);
     tanzelFatoraWindow.webContents.send("fatoraName",fileName);
-    total += value.availableQt*value.price;
+    total += value.boughtQt*value.buyPrice;
     jetpack.append(
         `tanzel/${fileName}.txt`,
-        `\n${value.name}\t\t\t${value.availableQt}\t${value.price}\t${value.buyPrice}\t${value.availableQt*value.buyPrice}`
+        `\n${value.name}\t\t\t${value.boughtQt}\t${value.availableQt}\t${value.price}\t${value.buyPrice}\t${value.boughtQt*value.buyPrice}`
         );
     });
     
@@ -252,6 +252,74 @@ ipcMain.on("printTanzelFatora", (event , value)=>{
     jetpack.append(
         `tanzel/${fileName}.txt`,
         `\nالإجمالي\t\t\t\t\t${total}\nالعدد\t\t\t\t\t${value}`
+      );
+});
+
+
+// return supplier
+
+function newReturnSupWindow(fatoraNumber){
+    returnSupWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true
+        },
+        width:300,
+        title:'عملية مرتجع مورد',
+        x:10,
+        y:10
+    });
+    fileName = fatoraNumber;
+    jetpack.file(`returnSupplier/${fatoraNumber}.html`,{});
+    jetpack.copyAsync(`returnSupplier/returnSup.html`, `returnSupplier/${fatoraNumber}.html`, { overwrite: true })
+    .then(()=>{
+        // development
+        // returnSupWindow.loadURL(`file://${__dirname}/returnSupplier/${fatoraNumber}.html`);
+        // production
+        returnSupWindow.loadURL(`file://${__dirname}/../../returnSupplier/${fatoraNumber}.html`);
+    }).catch((error)=>{
+        console.log(error)
+    });
+    let currentdate = new Date();
+    total=0;
+    jetpack.append(
+      `returnSupplier/${fileName}.txt`,
+      `\t\tQueenService\nالجامعة اليابانية\nالتاريخ\t${currentdate.getDate()}-${
+        currentdate.getMonth() + 1
+      }-${currentdate.getFullYear()}\t${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}\n
+      رقم الفاتورة\t${fileName}\nمرتجع مورد\nالصنف\t\t\tالكمية\tسعر البيع\tسعر الشراء\tالقيمة`
+    );
+}
+
+ipcMain.on("newReturnSup", (event , value)=>{
+    newReturnSupWindow(value);
+});
+
+ipcMain.on("newProductReturnSup", (event , value)=>{
+    returnSupWindow.webContents.send("newRetSupProductSent",value);
+    returnSupWindow.webContents.send("fatoraName",fileName);
+    total += value.quantity*value.buyPrice;
+    jetpack.append(
+        `returnSupplier/${fileName}.txt`,
+        `\n${value.name}\t\t\t${value.quantity}\t${value.price}\t${value.buyPrice}\t${value.quantity*value.buyPrice}`
+    );
+});
+    
+
+ipcMain.on("printRetSupFatora", (event , value)=>{
+    returnSupWindow.webContents.print({
+        silent: true,
+    }, (success, failureReason) => {
+        if (!success) alert(failureReason)
+        else {
+            console.log('Print Initiated');
+            returnSupWindow.close();
+        }
+    });
+    jetpack.append(
+        `returnSupplier/${fileName}.txt`,
+        `\nالإجمالي\t\t\t\t\t${total}`
       );
 });
 

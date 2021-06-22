@@ -15,6 +15,7 @@ const jetpack = require('fs-jetpack');
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+
   // offline settings
   firebase.firestore().enablePersistence()
   .then(()=>{
@@ -40,20 +41,24 @@ const jetpack = require('fs-jetpack');
 
   export const db = firebase.firestore();
   export const auth = firebase.auth();
+  export const storage = firebase.storage();
 
 
   let productsArray = [];
 
+  // let date = new Date();
+  // let month = `${(date.getMonth()+1)}-${date.getFullYear()}`;
   
   db.collection("products").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        //console.log(`${doc.id} => ${doc.data().name}`);
+        //console.log(`${doc.data().name} => ${doc.data()[month].addedQt}`);
         let product = {
             name: doc.data().name,
             price: doc.data().price,
             barcode: doc.data().barcode,
             availableQt: doc.data().availableQt,
-            buyPrice: doc.data().buyPrice? doc.data().buyPrice:undefined // to be removed
+            buyPrice: doc.data().buyPrice,
+            //? doc.data().buyPrice:undefined // to be removed
         }
         productsArray.push(product);
         jetpack.file(`products/products.json`,{content: JSON.stringify(productsArray)});

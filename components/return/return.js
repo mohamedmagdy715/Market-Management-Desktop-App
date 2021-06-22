@@ -1,14 +1,14 @@
-import {auth } from '../sales/salesFirebase.js';
-
-if(localStorage.getItem("loggedin") !== "cashier@queenservice.com"){
-    auth.signOut().then(() => {
-        localStorage.removeItem("loggedin");
-        location.href = `../login/login.html`;
-      }).catch((error) => {
-        window.alert(error.code + "\n" + error.message);
-      });
-}
+// import {auth } from '../sales/salesFirebase.js';
+// if(localStorage.getItem("loggedin") !== "cashier@queenservice.com"){
+//     auth.signOut().then(() => {
+//         localStorage.removeItem("loggedin");
+//         location.href = `../login/login.html`;
+//       }).catch((error) => {
+//         window.alert(error.code + "\n" + error.message);
+//       });
+// }
 import {Product}from "../../models/product.js";
+// import {GrdProduct} from "../../models/grdProduct.js";
 import {db} from '../sales/salesFirebase.js';
 const electron = require('electron');
 
@@ -17,6 +17,7 @@ const { ipcRenderer } = electron;
 const jetpack = require('fs-jetpack');
 
 let products = [];
+//grdProducts=[];
 
 let total,buyTotal,buyPrice;
 
@@ -41,6 +42,14 @@ document.getElementById("prdBarcode").addEventListener("keyup", function (event)
     }
   });
 
+    let date = new Date();
+    let month = `${(date.getMonth()+1)}-${date.getFullYear()}`;
+    let prevMonth;
+    if (date.getMonth() == 0 ){
+        prevMonth = `12-${date.getFullYear()-1}`;
+        }else{
+        prevMonth = `${(date.getMonth())}-${date.getFullYear()}`;
+        }
 
 document.getElementById("add").onclick = ()=>{
     if(document.getElementById("prdQt").value > 10000){
@@ -48,9 +57,26 @@ document.getElementById("add").onclick = ()=>{
             return
         }
     }
+    // let oldQt = products[products.findIndex((product) => {
+    //     return product.barcode == document.getElementById("prdBarcode").value;
+    //   })].availableQt;
+    products[products.findIndex((product) => {
+        return product.barcode == document.getElementById("prdBarcode").value;
+      })].availableQt += Number(document.getElementById("prdQt").value);
+
     let name = document.getElementById("prdName").value;
-    let price = document.getElementById("prdPrice").value;
-    let quantity = document.getElementById("prdQt").value;
+    let price = Number(document.getElementById("prdPrice").value);
+    let quantity = Number(document.getElementById("prdQt").value);
+
+    // finding grdproduct
+    // if(grdProducts.findIndex((grdProduct) => grdProduct.name == name) !== -1){
+    //     grdProducts[grdProducts.findIndex((grdProduct) => grdProduct.name == name)].soldQt -= Number(document.getElementById("prdQt").value);
+    //     grdProducts[grdProducts.findIndex((grdProduct) => grdProduct.name == name)].price = Number(document.getElementById("prdPrice").value);
+    //     grdProducts[grdProducts.findIndex((grdProduct) => grdProduct.name == name)].availableQt = products[products.findIndex((product) =>product.barcode == document.getElementById("prdBarcode").value)].availableQt;
+    // }else{
+    //     let grdProduct = new GrdProduct(name,oldQt,0,buyPrice,0-Number(document.getElementById("prdQt").value),Number(document.getElementById("prdPrice").value),products[products.findIndex((product) =>product.barcode == document.getElementById("prdBarcode").value)].availableQt)
+    //     grdProducts.push(grdProduct);
+    // }
 
     document.getElementById("prdName").value = "";
     document.getElementById("prdPrice").value = "";
@@ -69,9 +95,19 @@ document.getElementById("add").onclick = ()=>{
     db.collection("products").where("name", "==", name).get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
+                let prevQt = doc.data()[month]? doc.data()[month].prevQt : doc.data()[prevMonth]? doc.data()[prevMonth].availableQt : 0;
+                let obj = {
+                    addedQt : doc.data()[month]? doc.data()[month].addedQt : 0,
+                    availableQt : doc.data()[month]? doc.data()[month].availableQt + quantity : prevQt + quantity,
+                    buyPrice : buyPrice,
+                    prevQt : prevQt,
+                    price : price,
+                    soldQt : doc.data()[month]? doc.data()[month].soldQt - quantity : 0 - quantity,
+                  }
                 db.collection("products").doc(doc.id).update({
                     availableQt: doc.data().availableQt + Number(quantity),
-                    soldQt: doc.data().soldQt - quantity
+                    //soldQt: doc.data().soldQt - quantity
+                    [month]: obj
                 }).then(() => {
                     // console.log("Document successfully updated!");
                 })
@@ -135,6 +171,8 @@ document.getElementById("print").onclick = ()=>{
             window.alert("خطأ في إضافة الإيرادات: ", error);
         });
     });
+
+    // jetpack.file(`grd/${today}.json`,{content: JSON.stringify(grdProducts)});
 }
 
 
@@ -146,6 +184,13 @@ document.getElementById("newReturnFatora").onclick = () => {
     products = jetpack.read(`products/products.json`,'json');
     ipcRenderer.send("newReturnFatora",document.getElementById("returnFatoraNum").value);
     document.getElementById("prdBarcode").focus();
+    // creating new grd file for today
+    // let date = new Date();
+    // let today = `${date.getDate()}-${(date.getMonth()+1)}-${date.getFullYear()}`;
+    // if (!(grdProducts = jetpack.read(`grd/${today}.json`,'json'))){
+    //     jetpack.file(`grd/${today}.json`);
+    //     grdProducts = [];
+    // }
 };
 
 

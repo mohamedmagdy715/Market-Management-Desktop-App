@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row d-flex justify-content-between">
             <div class="col-1"></div>
-            <h1 class="col-10 text-center text-success">إدارة المنتجات</h1>
+            <h1 class="col-10 text-center text-success">مرتجع مورد</h1>
             <button type="button" id="back" class="col-1 btn btn-success"><i class="fas fa-arrow-left"></i></button>
         </div>
 
@@ -49,7 +49,16 @@
             </div>
             <div class="tab-pane fade" id="nav-edit" role="tabpanel" aria-labelledby="nav-edit-tab"> -->
                 <form id="editForm" >
-                    <div class="display-6">أدخل باركود أو اسم المنتج المراد تعديله</div>
+                    <div class="row mt-5 mx-2">
+                        <div class="form-group col-3">
+                            <label for="returnSupName">رقم الفاتورة</label>
+                            <input type="text" name="returnSupName" id="returnSupName" class="form-control">
+                        </div>
+                        <button type="button" id="newSupRet" class="btn btn-danger col-4">عملية مرتجع مورد جديدة</button>
+                    </div>
+                    <!-- <label for="returnSupName">رقم الفاتورة</label>
+                    <input type="text" name="returnSupName" id="returnSupName" class="form-control">
+                    <button type="button" class="btn btn-warning my-2" id="newSupRet">عملية جديدة</button> -->
                     <div class="row">
                         <div class="form-group col-4">
                             <label for="editprdBarcode">باركود</label>
@@ -57,19 +66,19 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="editprdName">اسم الصنف</label>
-                            <input type="text" name="editprdName" id="editprdName" class="form-control " required>
+                            <input type="text" name="editprdName" id="editprdName" class="form-control " readonly>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-warning my-2" id="showDataBtn">أعرض كمية المنتج</button>
                     <!-- <div class="form-group col-4">
                         <label for="editprdPrice">سعر المنتج</label>
                         <input type="number" name="editprdPrice" id="editprdPrice" class="form-control" required>
                     </div> -->
                     <div class="form-group col-4">
-                        <label for="editprdQt">كمية المنتج</label>
-                        <input type="number" name="editprdQt" id="editprdQt" class="form-control" required>
+                        <label for="editprdQt">الكمية المرتجعة</label>
+                        <input type="number" name="editprdQt" id="editprdQt" class="form-control" >
                     </div>
-                    <button type="submit" class="btn btn-success mt-5">تعديل</button>
+                    <button type="button" class="btn btn-success mt-5" id="addReturnSup">أضف</button><br/>
+                    <button type="button" class="btn btn-secondary mt-5" id="printReturnSup">أطبع</button>
                 </form>
             <!-- </div> -->
             <!-- <div class="tab-pane fade" id="nav-delete" role="tabpanel" aria-labelledby="nav-delete-tab"> -->
@@ -96,5 +105,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js"></script>
 
 <script type="module" src="productsMng.js"></script>
