@@ -315,6 +315,7 @@ ipcMain.on("printRetSupFatora", (event , value)=>{
         else {
             console.log('Print Initiated');
             returnSupWindow.close();
+            mainWindow.reload();
         }
     });
     jetpack.append(

@@ -20,7 +20,7 @@ const jetpack = require('fs-jetpack');
 
 let products = [];
 //grdProducts;
-let total,buyTotal,buyPrice,productAvQt;
+let total,buyTotal,buyPrice,productAvQt,isWindowOpen = false;;
 //back button
 
 document.getElementById("back").onclick = ()=>{
@@ -61,7 +61,7 @@ document.getElementById("add").onclick = ()=>{
     }
     if(document.getElementById("prdQt").value>productAvQt){
         window.alert("الكمية أكبر من المتوفر");
-        document.getElementById("prdQt").value = "";
+        document.getElementById("prdQt").value = 0;
         return;
     }
 
@@ -135,6 +135,7 @@ document.getElementById("add").onclick = ()=>{
 }
 
 document.getElementById("print").onclick = ()=>{
+    isWindowOpen = false;
     ipcRenderer.send("printFatora");
     let currentdate = new Date();
     let today = `${currentdate.getDate()}-${(currentdate.getMonth()+1)}-${currentdate.getFullYear()}`;
@@ -190,6 +191,11 @@ document.getElementById("print").onclick = ()=>{
 // new fatora window
 
 document.getElementById("newFatora").onclick = () => {
+    if (isWindowOpen){
+        window.alert("اطبع الفاتورة أولًا");
+        return
+      }
+      isWindowOpen = true;
     total = 0;
     buyTotal = 0;
     products = jetpack.read(`products/products.json`,'json');

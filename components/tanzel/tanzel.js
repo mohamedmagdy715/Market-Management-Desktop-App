@@ -12,7 +12,7 @@ import {Product}from "../../models/product.js";
 // import {GrdProduct} from "../../models/grdProduct.js";
 const jetpack = require('fs-jetpack');
 
-let totalAddedProducts = 0, oldQuantity=0;
+let totalAddedProducts = 0, oldQuantity=0,isWindowOpen = false;;
 let products = [];
 //grdProducts=[];
 
@@ -171,6 +171,11 @@ document.getElementById("submit").onclick = ()=>{
 
 // new tanzel fatora window
 document.getElementById("newTanzelFatora").onclick = () => {
+  if (isWindowOpen){
+    window.alert("اطبع الفاتورة أولًا");
+    return
+  }
+  isWindowOpen = true;
     products = jetpack.read(`products/products.json`,'json');
     ipcRenderer.send("newTanzelFatora",document.getElementById("tanzelFatoraNum").value);
     document.getElementById("prdBarcode").focus();
@@ -184,6 +189,7 @@ document.getElementById("newTanzelFatora").onclick = () => {
 };
 
 document.getElementById("print").onclick = ()=>{
+  isWindowOpen = false;
     ipcRenderer.send("printTanzelFatora",totalAddedProducts);
     // let date = new Date();
     // let today = `${date.getDate()}-${(date.getMonth()+1)}-${date.getFullYear()}`;

@@ -62,10 +62,9 @@ let totalAddedProducts = 0, totalEditProducts = 0, totalDeletedProducts=0;
 
 const jetpack = require('fs-jetpack');
 
-let products;
-// = jetpack.read(`products/products.json`,'json');
+let products= jetpack.read(`products/products.json`,'json');
 // let grdProducts = [],today="";
-let oldQt = 0,price = 0,buyPrice = 0;
+let oldQt = 0,price = 0,buyPrice = 0, isWindowOpen = false;
 
 // document.getElementById("addForm").onsubmit = (event)=>{
 //     event.preventDefault();
@@ -91,7 +90,12 @@ let oldQt = 0,price = 0,buyPrice = 0;
 // }
 
 document.getElementById("newSupRet").onclick = () => {
-    products = jetpack.read(`products/products.json`,'json');
+    if (isWindowOpen){
+      window.alert("اطبع الفاتورة أولًا");
+      return
+    }
+    isWindowOpen = true;
+    //products = jetpack.read(`products/products.json`,'json');
     ipcRenderer.send("newReturnSup",document.getElementById("returnSupName").value);
     document.getElementById("editprdBarcode").focus();
 };
@@ -101,8 +105,7 @@ document.getElementById("editprdBarcode").addEventListener("keyup", function (ev
         event.preventDefault();
       let product = products.find((product) => {
         return (
-          product.barcode == document.getElementById("editprdBarcode").value ||
-          product.name == document.getElementById("editprdName").value
+          product.barcode == document.getElementById("editprdBarcode").value
         );
       });
       document.getElementById("editprdBarcode").value = product.barcode;
@@ -139,11 +142,15 @@ document.getElementById("addReturnSup").onclick = ()=>{
     //     let grdProduct = new GrdProduct(document.getElementById("editprdName").value,oldQt,0,0,0,0,Number(document.getElementById("editprdQt").value))
     //     grdProducts.push(grdProduct);
     // }
+    if(Number(document.getElementById("editprdQt").value) > oldQt){
+      window.alert("الكمية أكبر من المتوفر");
+      document.getElementById("editprdQt").value = 0;
+      return;
+  }
 
     let name = document.getElementById("editprdName").value;
     let barcode = document.getElementById("editprdBarcode").value;
     let returnedQt = Number(document.getElementById("editprdQt").value);
-
 
     let prd = {
         name : name,
@@ -192,6 +199,7 @@ document.getElementById("addReturnSup").onclick = ()=>{
 }
 
 document.getElementById("printReturnSup").onclick = ()=>{
+  isWindowOpen = false;
     ipcRenderer.send("printRetSupFatora");
 }
 

@@ -42,7 +42,7 @@ document.getElementById("show").onclick = ()=>{
             <td >${doc.data()[month].soldQt}</td>
             <td >${doc.data()[month].price}</td>
             <td >${doc.data()[month].soldQt * doc.data()[month].price}</td>
-            <td >${doc.data()[month].availableQt}</td>
+            <td style="background-color : ${doc.data()[month].availableQt == 0? "red":""};" >${doc.data()[month].availableQt}</td>
             <td >${doc.data()[month].availableQt * doc.data()[month].price}</td>
           </tr>`
       });

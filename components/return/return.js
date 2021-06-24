@@ -19,7 +19,7 @@ const jetpack = require('fs-jetpack');
 let products = [];
 //grdProducts=[];
 
-let total,buyTotal,buyPrice;
+let total,buyTotal,buyPrice,isWindowOpen = false;;
 
 //back button
 
@@ -126,6 +126,7 @@ document.getElementById("add").onclick = ()=>{
 }
 
 document.getElementById("print").onclick = ()=>{
+    isWindowOpen = false;
     ipcRenderer.send("printReturnFatora");
     let currentdate = new Date();
     let today = `${currentdate.getDate()}-${(currentdate.getMonth()+1)}-${currentdate.getFullYear()}`;
@@ -179,6 +180,11 @@ document.getElementById("print").onclick = ()=>{
 // new return fatora window
 
 document.getElementById("newReturnFatora").onclick = () => {
+    if (isWindowOpen){
+        window.alert("اطبع الفاتورة أولًا");
+        return
+      }
+      isWindowOpen = true;
     total = 0;
     buyTotal = 0;
     products = jetpack.read(`products/products.json`,'json');
