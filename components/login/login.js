@@ -1,6 +1,6 @@
-if(localStorage.getItem("key") !== "ok"){
-  location.href = "../prdKey/prdKey.html";
-}
+// if(localStorage.getItem("key") !== "ok"){
+//   location.href = "../prdKey/prdKey.html";
+// }
 
 if(localStorage.getItem("loggedin")){
   location.href = "../landing/landing.html";

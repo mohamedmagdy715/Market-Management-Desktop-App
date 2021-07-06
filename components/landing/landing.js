@@ -21,6 +21,9 @@ document.getElementById("grd").onclick = () =>{
 document.getElementById("tanzel").onclick = () =>{
   location.href = `../tanzel/tanzel.html`;
 }
+document.getElementById("delete").onclick = () =>{
+  location.href = `../deletePrd/delPrd.html`;
+}
 
 document.getElementById("logout").onclick = () =>{
   auth.signOut().then(() => {

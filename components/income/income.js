@@ -32,7 +32,7 @@ document.getElementById("dayIncome").onclick = ()=>{
                 netIncome += doc.data().netIncome;
                 document.getElementById("inc").innerHTML = income;
                 document.getElementById("net").innerHTML = netIncome;
-                document.getElementById("cos").innerHTML = income - netIncome;
+                document.getElementById("cos").innerHTML = (income - netIncome).toFixed(2);
             }
         }).catch((error) => {
             console.log("Error getting document:", error);

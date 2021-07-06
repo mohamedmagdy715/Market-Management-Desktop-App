@@ -23,13 +23,45 @@ let totCost = 0, totSold = 0, totRest = 0;
 document.getElementById("show").onclick = ()=>{
   let choosenMonth = new Date(document.getElementById("choosenMonth").value);
   let month = `${choosenMonth.getMonth()+1}-${choosenMonth.getFullYear()}`;
+  let prevMonth;
+  if (new Date().getMonth() == 0) {
+    prevMonth = `12-${new Date().getFullYear() - 1}`;
+  } else {
+    prevMonth = `${(new Date().getMonth())}-${new Date().getFullYear()}`;
+  }
 
   db.collection("products").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
+        if(doc.data()[month]){
           grdProducts.push(doc);
           totCost += (doc.data()[month].addedQt + doc.data()[month].prevQt) * doc.data()[month].buyPrice;
           totSold += doc.data()[month].soldQt * doc.data()[month].price;
           totRest += doc.data()[month].availableQt * doc.data()[month].price;
+        }
+        else if(new Date().getMonth() == choosenMonth.getMonth()){
+          let prevQt = doc.data()[prevMonth] ? doc.data()[prevMonth].availableQt : 0;
+          let obj = {
+            addedQt: 0,
+            availableQt: prevQt,
+            buyPrice: doc.data()[prevMonth] ? doc.data()[prevMonth].buyPrice : 0,
+            prevQt: prevQt,
+            price: doc.data()[prevMonth] ? doc.data()[prevMonth].price : 0,
+            soldQt: 0,
+          }
+          db.collection("products").doc(doc.id).update({
+            [month]: obj
+          })
+          .then(() => {
+            grdProducts.push(doc);
+            totCost += (doc.data()[month].addedQt + doc.data()[month].prevQt) * doc.data()[month].buyPrice;
+            totSold += doc.data()[month].soldQt * doc.data()[month].price;
+            totRest += doc.data()[month].availableQt * doc.data()[month].price;
+          })
+          .catch((error) => {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+        }
       });
       grdProducts.sort(compare);
       grdProducts.forEach(doc => {
@@ -38,7 +70,7 @@ document.getElementById("show").onclick = ()=>{
             <td >${doc.data()[month].prevQt}</td>
             <td >${doc.data()[month].addedQt}</td>
             <td >${doc.data()[month].buyPrice}</td>
-            <td >${(doc.data()[month].addedQt + doc.data()[month].prevQt) * doc.data()[month].buyPrice}</td>
+            <td >${((doc.data()[month].addedQt + doc.data()[month].prevQt) * doc.data()[month].buyPrice).toFixed(2)}</td>
             <td >${doc.data()[month].soldQt}</td>
             <td >${doc.data()[month].price}</td>
             <td >${doc.data()[month].soldQt * doc.data()[month].price}</td>
@@ -51,7 +83,7 @@ document.getElementById("show").onclick = ()=>{
       <td ></td>
       <td ></td>
       <td ></td>
-      <td >${totCost}</td>
+      <td >${totCost.toFixed(2)}</td>
       <td ></td>
       <td ></td>
       <td >${totSold}</td>
