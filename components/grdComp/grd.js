@@ -32,6 +32,9 @@ document.getElementById("show").onclick = ()=>{
 
   db.collection("products").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
+        // if(doc.data().name == "زبادو لاكتيل مانجو 220مل"){
+        //   console.log(doc.data().barcode)
+        // }
         if(doc.data()[month]){
           grdProducts.push(doc);
           totCost += (doc.data()[month].addedQt + doc.data()[month].prevQt) * doc.data()[month].buyPrice;

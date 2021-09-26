@@ -20,7 +20,7 @@ const jetpack = require('fs-jetpack');
 
 let products = [];
 //grdProducts;
-let total,buyTotal,buyPrice,productAvQt,isWindowOpen = false;;
+let total = 0,buyTotal = 0,buyPrice,productAvQt,isWindowOpen = false;
 //back button
 
 document.getElementById("back").onclick = ()=>{

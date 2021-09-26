@@ -18,8 +18,8 @@ app.on('ready',()=>{
     mainWindow.loadURL(`file://${__dirname}/components/login/login.html`);
 
     // menubar
-    const plainMenu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(plainMenu);
+    // const plainMenu = Menu.buildFromTemplate(menuTemplate);
+    // Menu.setApplicationMenu(plainMenu);
 });
 
 // menu options

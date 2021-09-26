@@ -19,7 +19,7 @@ const jetpack = require('fs-jetpack');
 let products = [];
 //grdProducts=[];
 
-let total,buyTotal,buyPrice,isWindowOpen = false;;
+let total = 0,buyTotal = 0,buyPrice,isWindowOpen = false;;
 
 //back button
 
